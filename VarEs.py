@@ -1,15 +1,6 @@
 import yfinance as yf
 import pandas
 
-# prueba 
-datos = yf.download("AAPL", period="2y")
-precios = datos["Close"]
-ticker = precios["AAPL"]
-print(type(ticker))
-rendimientos = ticker.pct_change()
-print(rendimientos)
-
-
 ## VaR Historico
 # funcion para extraer los retornos de las compañias en el periodo de dos años
 
@@ -26,5 +17,6 @@ def get_returns(ticker):
 ## VaR Expected Shortfall
 # sacar la media de los rendimientos mas alla del VaR
 
-
+print(get_returns("AAPL"))
+    
 
