@@ -10,15 +10,16 @@ rendimientos = ticker.pct_change()
 print(rendimientos)
 
 
-
+## VaR Historico
 # funcion para extraer los retornos de las compañias en el periodo de dos años
 
 def get_returns(ticker):
-    datos = yf.download(ticker, period="2y")
+    datos = yf.download(ticker, period="2y")    # sacar los rendimientos diarios de cada compañia en los ultimos dos años
+    col_close = datos["Close"]
+    serie_ticker = col_close[ticker]
+    rendimientos = serie_ticker.pct_change().dropna() # sacar rendimientos diarios, eliminar datos Na
+    return rendimientos
 
-## Var Historico
-# obtener rendimientos diarios de cada compañia en los ultimos dos años
-# ordenar rendiminetos de peor a mejor (pandas)
 # eleccion nivel de confianza (95/99)
 
 
