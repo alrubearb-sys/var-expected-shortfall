@@ -5,3 +5,5 @@ venv/
 .venv/
 *.egg-info/
 CLAUDE.md
+.vscode/
+*.png
