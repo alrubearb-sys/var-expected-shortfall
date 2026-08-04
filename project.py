@@ -3,6 +3,7 @@ import pandas
 import sys
 import logging
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
 
 logging.getLogger("yfinance").setLevel(logging.CRITICAL) # elimina el mensaje de error en el terminal si "Invalid Ticker"
 
@@ -31,16 +32,32 @@ def main():
     # VaR historico + hacer la grafica
     var_his = calculate_var(datos, confianza)
 
-    plt.figure(figsize=(10,6))
-    plt.hist(datos, bins=50, color="#184a79", edgecolor="white", alpha=0.85)
-    plt.text(0.05, 0.05, f"VaR: {var_his*100:.2f}%", transform=plt.gca().transAxes, ha="left", va="bottom")
-    plt.axvline(var_his, color="crimson", linestyle="--", linewidth=2)
-    plt.title(f"Distribution of returns - {ticker} - {confianza}%")
-    plt.xlabel("Daily return")
-    plt.ylabel("Frequency")
-    plt.grid(alpha=0.3)
+    # Expected Shortfall
+    es_var = calculate_es(datos,var_his)
+
+    # grafica de VaR hitorico + Expected Shortfall
+    plt.rcParams["font.family"] = "serif"
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.hist(datos, bins=112, color="#0B2545", edgecolor="white", alpha=0.9)
+    ax.axvline(var_his, color="#8B1E3F", linestyle="--", linewidth=2, label=f"VaR {confianza}%: {var_his*100:.2f}%")
+    ax.axvline(es_var, color="#B08D2B", linestyle="--", linewidth=2, label=f"Expected Shortfall: {es_var*100:.2f}%")
+
+    ax.set_title(f"Distribution of Returns — {ticker} ({confianza}% Confidence)", fontsize=14, pad=15)
+    ax.set_xlabel("Daily Return")
+    ax.set_ylabel("Frequency")
+    ax.xaxis.set_major_formatter(mticker.PercentFormatter(xmax=1, decimals=0))
+
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.grid(axis="y", alpha=0.25)
+
+    ax.legend(frameon=True, loc="upper right", fontsize=10)
+
     plt.savefig(f"VaR_his_{ticker}_{confianza}.png", dpi=300, bbox_inches="tight")
     plt.show()
+
+    
 
 # funcion para extraer los retornos de las compañias en el periodo de dos años
 def get_returns(ticker):
@@ -51,17 +68,18 @@ def get_returns(ticker):
     rendimientos = serie_ticker.pct_change().dropna()   # sacar rendimientos diarios, eliminar datos Na
     return rendimientos
 
-
-## VaR Expected Shortfall
-# sacar la media de los rendimientos mas alla del VaR
+# funcion para el VaR historico
 def calculate_var(rendimientos, confianza):
     q = 1 - (confianza/100)
     var_his = rendimientos.quantile(q, interpolation='linear')
     return var_his
 
+# funcion para el Expected Shortfall
+def calculate_es(rendimientos, var_his):
+    es_var = rendimientos[rendimientos < var_his]
+    es_var = es_var.mean()
+    return es_var
 
-def calculate_es():
-    pass
 
 
 if __name__ == "__main__":
