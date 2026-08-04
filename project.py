@@ -11,7 +11,7 @@ logging.getLogger("yfinance").setLevel(logging.CRITICAL) # elimina el mensaje de
 def main():
 
     # input de ticker
-    ticker = input("Enter the stock ticker you want to analyze: ").upper().strip()
+    ticker = input("Enter the stock ticker you want to analyze (Example: AAPL, NVDA): ").upper().strip()
     datos = get_returns(ticker)
     try:    # pruebo que el ticker tiene datos y es valido
         if datos.empty is True:
