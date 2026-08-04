@@ -7,3 +7,4 @@ venv/
 CLAUDE.md
 .vscode/
 *.png
+!VaR_his_AAPL_99.png
