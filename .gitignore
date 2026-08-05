@@ -6,5 +6,6 @@ venv/
 *.egg-info/
 CLAUDE.md
 .vscode/
+guion_video.md
 *.png
 !VaR_his_AAPL_99.png
