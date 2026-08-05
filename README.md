@@ -1,7 +1,5 @@
 # VaR and Expected Shortfall Calculator
 
-#### Video Demo: https://youtu.be/MQt7WTwN1Gs
-
 ## Description
 
 This is my final project for CS50P (Harvard's Introduction to Programming with Python).
