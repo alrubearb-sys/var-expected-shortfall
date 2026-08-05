@@ -1,6 +1,6 @@
 # VaR and Expected Shortfall Calculator
 
-#### Video Demo: <PENDING — link to be added after recording>
+#### Video Demo: https://youtu.be/MQt7WTwN1Gs
 
 ## Description
 
